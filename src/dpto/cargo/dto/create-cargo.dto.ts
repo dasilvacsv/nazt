@@ -8,5 +8,5 @@ export class CreateCargoDto {
     status_ca: boolean;
 
     @ApiProperty({ example: 1, description: 'Id del departamento, llave foránea' })  
-    id_departamento_id: number;
+    id_carg_id: number;
   }

@@ -4,7 +4,7 @@ import { Departamento } from './departamento.entity';
 @Entity()
 export class Cargo {
   @PrimaryGeneratedColumn()
-  id_cargo: number;
+  id_cargos: number;
 
   @Column({ length: 50 })
   nombre_car: string;
@@ -16,10 +16,10 @@ export class Cargo {
   tipo_cargo: string;
 
   @ManyToOne(() => Departamento, departamento => departamento.cargos)
-  @JoinColumn({ name: 'id_departamento_id' }) 
+  @JoinColumn({ name: 'id_carg_id' }) 
   departamento: Departamento;
   @Column()
-  id_departamento_id: number;
+  id_carg_id: number;
 }
 
 

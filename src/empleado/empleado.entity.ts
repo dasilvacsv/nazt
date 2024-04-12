@@ -40,7 +40,7 @@ export class Empleado {
     correo_e: string | null;
 
     @Column({nullable: true})
-    id_parroquia_id: number | null;
+    id_parr_id: number | null;
 
     @Column({nullable: true})
     direccion_e: string | null;
@@ -55,10 +55,10 @@ export class Empleado {
     botas_e: string | null;
 
     @Column({nullable: true})
-    id_cargo_id: number | null;
+    id_emp_carg: number | null;
 
     @Column({nullable: true})
-    tipo_per_e: string | null;
+    tipo_personal_e: string | null;
 
     @Column({nullable: true})
     jornada_e: string | null;
@@ -73,11 +73,11 @@ export class Empleado {
     reg_biometrico_e: number | null;
     
     @ManyToOne(() => Parroquia)
-    @JoinColumn({ name: 'id_parroquia_id' })
+    @JoinColumn({ name: 'id_parr_id' })
     parroquia: Parroquia;
     
     @ManyToOne(() => Cargo)
-    @JoinColumn({ name: 'id_cargo_id' }) 
+    @JoinColumn({ name: 'id_emp_carg' }) 
     cargo: Cargo;
 
     

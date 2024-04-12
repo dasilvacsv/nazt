@@ -19,17 +19,16 @@ export class EmpleadoService {
       await this.empleadoRepository.save(empleado);
       return empleado;
     } catch (error) {
-
-      if (error.code === '23505') { 
+      console.error('Failed to create empleado:', error);
+      if (error.code === '23505') {
         throw new HttpException({
           status: HttpStatus.BAD_REQUEST,
           error: 'La cédula proporcionada ya está registrada.',
         }, HttpStatus.BAD_REQUEST);
       }
-     
       throw new HttpException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: 'Error al registrar el empleado.',
+        error: 'Error al registrar el empleado: ' + error.message,
       }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
