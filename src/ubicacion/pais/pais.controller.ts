@@ -1,12 +1,16 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { PaisService } from './pais.service';
 import { CreatePaisDto } from './pais/dto/create-pais.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiBody } from '@nestjs/swagger';
 
+@ApiTags('CRUD País')
 @Controller('ubicacion/pais')
 export class PaisController {
   constructor(private readonly paisService: PaisService) {}
 
   @Post()
+  @ApiBody({ type: CreatePaisDto })
   create(@Body() createPaisDto: CreatePaisDto) {
     return this.paisService.create(createPaisDto);
   }

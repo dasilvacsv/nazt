@@ -1,8 +1,9 @@
-// src/ubicacion/municipio.controller.ts
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { MunicipioService } from './municipio.service';
 import { CreateMunicipioDto } from './dto/create-municipio.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('CRUD Municipio')
 @Controller('ubicacion/municipio')
 export class MunicipioController {
   constructor(private readonly municipioService: MunicipioService) {}

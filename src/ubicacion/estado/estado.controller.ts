@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { EstadoService } from './estado.service';
 import { CreateEstadoDto } from './dto/create-estado.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('CRUD Estado')
 @Controller('ubicacion/estado')
 export class EstadoController {
     constructor(private readonly estadoService: EstadoService) { }

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { Pais } from './pais.entity';
 import { Municipio } from './municipio.entity';
 
+
 @Entity()
 export class Estado {
   @PrimaryGeneratedColumn()

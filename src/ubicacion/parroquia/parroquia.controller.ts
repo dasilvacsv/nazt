@@ -1,8 +1,9 @@
 import {Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ParroquiaService } from './parroquia.service';
 import { CreateParroquiaDto } from './dto/create-parroquia.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags("CRUD Parroquia")
 @Controller('ubicacion/parroquia')
 export class ParroquiaController {
     constructor(private readonly parroquiaService: ParroquiaService) {}

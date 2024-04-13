@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Estado } from './estado.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Pais {
