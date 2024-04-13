@@ -4,7 +4,7 @@ import { Departamento } from './departamento.entity';
 @Entity()
 export class Cargo {
   @PrimaryGeneratedColumn()
-  id_cargos: number;
+  id_cargo: number;
 
   @Column({ length: 50 })
   nombre_car: string;

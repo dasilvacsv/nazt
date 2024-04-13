@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { CargoService } from './cargo.service';
 import { CreateCargoDto } from './dto/create-cargo.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('CRUD Cargo')
 @Controller('dpto/cargo')
 export class CargoController {
     constructor(private readonly cargoService: CargoService) { }

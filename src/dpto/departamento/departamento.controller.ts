@@ -1,8 +1,9 @@
 import {Controller, Get, Post, Body, Param, Put, Delete} from '@nestjs/common';
 import {DepartamentoService} from './departamento.service';
 import {CreateDepartamentoDto} from './dto/create-departamento.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('CRUD Departamento')
 @Controller('dpto/departamento')
 export class DepartamentoController {
     constructor(private readonly departamentoService: DepartamentoService) {}

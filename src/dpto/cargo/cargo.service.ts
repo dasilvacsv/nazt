@@ -22,7 +22,7 @@ export class CargoService {
     }
 
     async findOne(id: number): Promise<Cargo> {
-        return this.cargoRepository.findOne({ where: { id_cargos: id } });
+        return this.cargoRepository.findOne({ where: { id_cargo: id } });
     }
 
     async findByDepartamentoId(departamentoId: number): Promise<Cargo[]> {
