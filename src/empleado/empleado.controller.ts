@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, Patch } from '@nestjs/common';
 import { EmpleadoService } from './empleado.service';
 import { CreateEmpleadoDto } from './dto/create-empleado.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('CRUD Empleado')
 @Controller('/empleado')
 export class EmpleadoController {
     constructor(private readonly empleadoService: EmpleadoService) { }

@@ -26,10 +26,10 @@ export class Empleado {
     @Column({ type: 'date' }) 
     fecha_nac_e: Date;
 
-
     @Column()
     sexo_e: string;
-
+    
+    // Datos Contacto
     @Column({nullable: true})
     telef_fijo_e: string | null;
 
@@ -45,6 +45,7 @@ export class Empleado {
     @Column({nullable: true})
     direccion_e: string | null;
 
+    // Datos Uniformes
     @Column({nullable: true})
     pantalon_e: string | null;
 
@@ -54,6 +55,7 @@ export class Empleado {
     @Column({nullable: true})
     botas_e: string | null;
 
+    // Datos de Trabajo
     @Column({nullable: true})
     id_emp_carg: number | null;
 
@@ -63,6 +65,7 @@ export class Empleado {
     @Column({nullable: true})
     jornada_e: string | null;
 
+    // Datos Caracteristicos
     @Column({nullable: true})
     geo_ubicacion: string | null;
 

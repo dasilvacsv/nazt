@@ -19,7 +19,7 @@ export class EmpleadoService {
       await this.empleadoRepository.save(empleado);
       return empleado;
     } catch (error) {
-      console.error('Failed to create empleado:', error);
+      console.error('Error al crear empleado:', error);
       if (error.code === '23505') {
         throw new HttpException({
           status: HttpStatus.BAD_REQUEST,
@@ -40,7 +40,7 @@ export class EmpleadoService {
   async findOne(id: number): Promise<Empleado> {
     const empleado = await this.empleadoRepository.findOne({ where: { id_empleado: id } });
     if (!empleado) {
-      throw new NotFoundException(`Empleado with ID "${id}" not found`);
+      throw new NotFoundException(`Empleado con ID "${id}" no encontrado`);
     }
     return empleado;
   }
@@ -53,7 +53,7 @@ export class EmpleadoService {
   async patch(id: number, updates: any): Promise<Empleado> {
     const result = await this.empleadoRepository.update(id, updates);
     if (result.affected === 0) {
-      throw new NotFoundException(`Empleado with ID "${id}" not found`);
+      throw new NotFoundException(`Empleado con ID "${id}" no encontrado`);
     }
     return this.findOne(id);
   }
@@ -72,8 +72,8 @@ export class EmpleadoService {
         'empleado.apellido1_e',
         'empleado.apellido2_e',
         'empleado.fecha_nac_e',
-        'empleado.sexo_e',
-        'empleado.reg_biometrico_e'
+        'empleado.id_emp_carg',
+        'empleado.reg_biometrico_e',
       ])
       .getMany();
   }
