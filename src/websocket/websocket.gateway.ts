@@ -1,4 +1,3 @@
-// src/gateway/websocket.gateway.ts
 import { WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ZKTecoService } from './websocket.service';

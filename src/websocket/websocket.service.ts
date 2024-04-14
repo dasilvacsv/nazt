@@ -1,4 +1,3 @@
-// src/gateway/websocket.service.ts
 import { Injectable } from '@nestjs/common';
 import ZKLib from 'zklib-32ble';
 import { EventEmitter } from 'events';

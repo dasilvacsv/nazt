@@ -11,7 +11,6 @@ async function bootstrap() {
     .setTitle('CIFF WEBAPP')
     .setDescription('Complejo Industrial Fabrica de Fabricas')
     .setVersion('1.0')
-    .addTag('ejemplo')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

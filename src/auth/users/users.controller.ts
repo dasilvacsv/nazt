@@ -2,7 +2,9 @@ import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignUpDto } from './dto/signup.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('CRUD Usuario')
 @Controller('/usuario')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
@@ -22,8 +24,8 @@ export class UsersController {
     return this.userService.getUserByEmail(email);
   }
 
-  @Get('/')
-  async testRoute() {
-    return 'Hello from user controller!'
+  @Get()
+  async getAllUsers() {
+    return this.userService.getAllUsers();
   }
 }

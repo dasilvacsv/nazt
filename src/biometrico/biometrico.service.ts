@@ -11,7 +11,7 @@ export class BiometricoService {
   constructor(
     private empleadoService: EmpleadoService,
     @InjectRepository(Biometrico)
-    private biometricoRepository: Repository<Biometrico>, // Inject the Biometrico repository
+    private biometricoRepository: Repository<Biometrico>, 
   ) {}
 
   async getZKTecoTime(): Promise<any> {
@@ -30,7 +30,6 @@ export class BiometricoService {
   async getZKTecoAttendances(): Promise<any> {
     let zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
 
-    // Create a promise that will reject in 6000ms if the zkInstance does not respond
     const timeoutPromise = new Promise((resolve, reject) => {
       const id = setTimeout(() => {
         clearTimeout(id);
@@ -74,16 +73,14 @@ export class BiometricoService {
       let users = await zkInstance.getUsers();
       await zkInstance.disconnect();
 
-      // Ensure that we have a data property and it is an array
       if (!users || !users.data || !Array.isArray(users.data)) {
-        throw new NotFoundException(`Users data is not available or not in expected format`);
+        throw new NotFoundException(`Los datos de usuarios no están disponibles`);
       }
 
-      // Find the user with the given uid
       const user = users.data.find(user => user.uid === uid);
 
       if (!user) {
-        throw new NotFoundException(`User with UID "${uid}" not found`);
+        throw new NotFoundException(`Usuario con UID "${uid}" no encontrado`);
       }
 
       return user;
@@ -146,10 +143,10 @@ export class BiometricoService {
       await zkInstance.createSocket();
       await zkInstance.clearAttendanceLog();
       await zkInstance.disconnect();
-      return { message: "Attendance logs cleared successfully" };
+      return { message: "Los datos de asistencia han sido borrados exitosamente" };
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to clear attendance logs');
+      throw new Error('Ha ocurrido un error al intentar borrar los datos de asistencia');
     }
 
 

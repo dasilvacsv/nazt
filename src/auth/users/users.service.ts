@@ -19,7 +19,7 @@ export class UsersService {
   async createUser(signUpDto: SignUpDto): Promise<UserResponseDto> {
   const errors = await validate(signUpDto);
   if (errors.length > 0) {
-    throw new BadRequestException('Validation failed');
+    throw new BadRequestException('Validación fallida. Por favor, revise los datos enviados.');
   }
 
   const { id_correo, clave_u, id_empleado_id } = signUpDto;
@@ -30,8 +30,6 @@ export class UsersService {
       id_correo,
       clave_u: hashedPassword,
       empleado: { id_empleado: id_empleado_id },
-      create_u: new Date(), 
-      update_u: new Date(), 
     });
 
     await this.usuariosRepository.save(newUser);
@@ -91,6 +89,13 @@ export class UsersService {
       where: { id_correo: email },
       select: ['id_usuario', 'id_correo', 'clave_u']
     });
+  }
+
+  async getAllUsers(): Promise<UserResponseDto[]> {
+    const users = await this.usuariosRepository.find();
+    return users.map(user => plainToClass(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    }));
   }
 
 }

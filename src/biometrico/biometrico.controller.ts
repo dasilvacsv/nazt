@@ -2,7 +2,9 @@ import { Controller, Get, Res, HttpStatus, Post, Body, HttpCode, Param, BadReque
 import { BiometricoService } from './biometrico.service';
 import { Response } from 'express';
 import { CreateZKTecoUserDto } from './dto/create-zktecouser.dto';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Biometrico Interacción')
 @Controller('biometrico')
 export class BiometricoController {
     constructor(private readonly biometricoService: BiometricoService) { }
@@ -23,18 +25,17 @@ export class BiometricoController {
         try {
             const attendances = await this.biometricoService.getZKTecoAttendances();
             if (!attendances || attendances.length === 0) {
-                return res.status(HttpStatus.OK).json({ message: "There are no attendance logs." });
+                return res.status(HttpStatus.OK).json({ message: "No hay registros de asistencia" });
             }
             res.status(HttpStatus.OK).json({ attendances });
         } catch (error) {
             console.error(error);
             let status = HttpStatus.INTERNAL_SERVER_ERROR;
-            let message = 'Error retrieving attendance logs, please try again later.';
+            let message = 'Ha ocurrido un error al intentar obtener los datos de asistencia';
 
-            // Customize the response if it's a timeout error
             if (error.message.includes('timed out')) {
                 status = HttpStatus.REQUEST_TIMEOUT;
-                message = 'Request timed out, please try again.';
+                message = 'El servidor ZKTeco no responde. Por favor, intente más tarde';
             }
 
             res.status(status).json({
@@ -59,11 +60,12 @@ export class BiometricoController {
     async getZKTecoUserByUid(@Param('uid') uid: string) {
       const userUid = parseInt(uid);
       if (isNaN(userUid)) {
-        throw new BadRequestException(`Invalid UID "${uid}"`);
+        throw new BadRequestException(`UID inválido "${uid}"`);
       }
       return this.biometricoService.getZKTecoUserByUid(userUid);
     }
 
+    @ApiProperty({ description: 'Borra un usuario en el dispositivo ZKTeco' })
     @Post('usuarios')
     @HttpCode(HttpStatus.CREATED)
     async createZKTecoUser(@Body() createZKTecoUserDto: CreateZKTecoUserDto) {
