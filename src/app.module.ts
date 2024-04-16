@@ -10,6 +10,8 @@ import { EmpleadoModule } from './empleado/empleado.module';
 import { BiometricoModule } from './biometrico/biometrico.module';
 import { GatewayModule } from './websocket/websocket.module';
 import { AuthModule } from './auth/auth.module';
+import { ExcelModule } from './excel/excel.module';
+import { FamiliarModule } from './familiar/familiar.module';
 
 
 @Module({
@@ -35,6 +37,8 @@ import { AuthModule } from './auth/auth.module';
     BiometricoModule,
     GatewayModule,
     AuthModule,
+    ExcelModule,
+    FamiliarModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne
 import { Parroquia } from '../ubicacion/entities/parroquia.entity';
 import { Cargo } from '../dpto/entities/cargo.entity';
 import { Usuario } from 'src/auth/entities/usuario.entity';
+import { Familiar } from 'src/familiar/entities/familiar.entity';
 
 @Entity()
 export class Empleado {
@@ -86,4 +87,8 @@ export class Empleado {
 
     @OneToOne(() => Usuario, usuario => usuario.empleado)
     usuario: Usuario;
+
+     /* @ManyToOne(() => Familiar)
+    @JoinColumn({name: 'id_fam_id'})
+    familiar: Familiar */
 }
