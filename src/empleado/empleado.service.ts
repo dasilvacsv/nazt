@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Empleado } from './empleado.entity';
 import { CreateEmpleadoDto } from './dto/create-empleado.dto';
 import { UpdateEmpleadoDto } from './dto/update-empleado.dto';
@@ -77,6 +77,14 @@ export class EmpleadoService {
       ])
       .getMany();
   }
+
+  async empleadosBiometrico(): Promise<number> {
+    return this.empleadoRepository.count({
+        where: {
+            reg_biometrico_e: Not(IsNull()),
+        },
+    });
+}
 
   // Biométrico
   async findByCedula(cedula: string): Promise<Empleado | undefined> {

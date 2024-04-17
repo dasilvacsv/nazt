@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Parroquia } from '../ubicacion/entities/parroquia.entity';
 import { Cargo } from '../dpto/entities/cargo.entity';
 import { Usuario } from 'src/auth/entities/usuario.entity';
 import { Familiar } from 'src/familiar/entities/familiar.entity';
+import { Asistencia } from 'src/asistencia/entities/asistencia.entity';
 
 @Entity()
 export class Empleado {
@@ -87,6 +88,9 @@ export class Empleado {
 
     @OneToOne(() => Usuario, usuario => usuario.empleado)
     usuario: Usuario;
+
+    @OneToMany(() => Asistencia, asistencia => asistencia.empleado)
+    asistencias: Asistencia[];
 
      /* @ManyToOne(() => Familiar)
     @JoinColumn({name: 'id_fam_id'})

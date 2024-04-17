@@ -19,11 +19,16 @@ export class EmpleadoController {
 
     }
 
+    @Get('/cantbiometrico')
+    countBiometricRegistered() {
+        return this.empleadoService.empleadosBiometrico();
+    }
+
     @Get('/cedula/:cedula')
     findByCedula(@Param('cedula') cedula: string) {
-      return this.empleadoService.findByCedula(cedula);
+        return this.empleadoService.findByCedula(cedula);
     }
-  
+
 
     @Get()
     findAll() {
@@ -34,6 +39,8 @@ export class EmpleadoController {
     findOne(@Param('id') id: number) {
         return this.empleadoService.findOne(id);
     }
+
+    
 
     @Put(':id')
     update(@Param('id') id: number, @Body() updateEmpleadoDto: CreateEmpleadoDto) {
@@ -49,6 +56,7 @@ export class EmpleadoController {
     remove(@Param('id') id: number) {
         return this.empleadoService.remove(id);
     }
+
 
 
 }

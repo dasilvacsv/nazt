@@ -12,6 +12,7 @@ import { GatewayModule } from './websocket/websocket.module';
 import { AuthModule } from './auth/auth.module';
 import { ExcelModule } from './excel/excel.module';
 import { FamiliarModule } from './familiar/familiar.module';
+import { AsistenciaModule } from './asistencia/asistencia.module';
 
 
 @Module({
@@ -39,6 +40,7 @@ import { FamiliarModule } from './familiar/familiar.module';
     AuthModule,
     ExcelModule,
     FamiliarModule,
+    AsistenciaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

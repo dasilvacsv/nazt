@@ -1,69 +1,69 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, Logger } from '@nestjs/common';
 const ZKLib = require('zklib-32ble');
 import { CreateZKTecoUserDto } from './dto/create-zktecouser.dto';
 import { EmpleadoService } from '../empleado/empleado.service';
 import { Biometrico } from './entitites/biometrico.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AsistenciaService } from 'src/asistencia/asistencia.service';
 
 @Injectable()
 export class BiometricoService {
+  private readonly timeoutMs: number = 5000; 
+  private readonly logger = new Logger(BiometricoService.name);
+
   constructor(
     private empleadoService: EmpleadoService,
     @InjectRepository(Biometrico)
-    private biometricoRepository: Repository<Biometrico>, 
+    private biometricoRepository: Repository<Biometrico>,
+    private asistenciaService: AsistenciaService,
   ) {}
 
-  async getZKTecoTime(): Promise<any> {
-    let zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
-    try {
-      await zkInstance.createSocket();
-      const time = await zkInstance.getTime();
-      await zkInstance.disconnect();
-      return time;
-    } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
-    }
-  }
-
-  async getZKTecoAttendances(): Promise<any> {
-    let zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
-
-    const timeoutPromise = new Promise((resolve, reject) => {
+  private async withTimeout(promise: Promise<any>, ms: number): Promise<any> {
+    const timeoutPromise = new Promise((_resolve, reject) => {
       const id = setTimeout(() => {
         clearTimeout(id);
-        reject(new Error("Operation timed out after 6 seconds"));
-      }, 6000);
+        reject(new Error("Operation timed out"));
+      }, ms);
     });
+    return Promise.race([promise, timeoutPromise]);
+  }
 
+  async executeOperation(operation: (zkInstance: any) => Promise<any>): Promise<any> {
+    const zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
     try {
       await zkInstance.createSocket();
-
-      const attendances = await Promise.race([
-        zkInstance.getAttendances(),
-        timeoutPromise,
-      ]);
-
-      await zkInstance.disconnect();
-      return attendances || []; 
+      return await this.withTimeout(operation(zkInstance), this.timeoutMs);
     } catch (error) {
-      console.error(error);
-      throw new InternalServerErrorException(error.message);
+      console.error('Error during ZK operation:', error);
+      throw new InternalServerErrorException('ZK operation failed');
+    } finally {
+      try {
+        await zkInstance.disconnect();
+      } catch (disconnectError) {
+        console.error('Failed to disconnect:', disconnectError);
+      }
     }
   }
 
   async getZKTecoUsers(): Promise<any> {
-    let zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
-    try {
-      await zkInstance.createSocket();
-      const users = await zkInstance.getUsers();
-      await zkInstance.disconnect();
-      return users;
-    } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
-    }
+    return this.executeOperation(zk => zk.getUsers());
+  }
+
+  async getZKTecoAttendances(): Promise<any> {
+    return this.executeOperation(async zk => {
+        const attendances = await zk.getAttendances();
+        this.logger.debug(`Received attendances: ${JSON.stringify(attendances)}`);
+        return attendances;
+    }).catch(error => {
+        this.logger.error('Error fetching attendances:', error);
+        throw new InternalServerErrorException('Error fetching attendances from device');
+    });
+}
+
+
+  async getZKTecoTime(): Promise<any> {
+    return this.executeOperation(zk => zk.getTime());
   }
 
   async getZKTecoUserByUid(uid: number): Promise<any> {
@@ -131,11 +131,7 @@ export class BiometricoService {
       console.error(error);
       throw new InternalServerErrorException(error.message);
     }
-  }
-  
-  
-
-  
+  }  
 
   async deleteZKTecoAttLogs(): Promise<{ message: string }> {
     const zkInstance = new ZKLib("192.168.1.230", 4370, 5200, 5000);
@@ -148,8 +144,6 @@ export class BiometricoService {
       console.error(error);
       throw new Error('Ha ocurrido un error al intentar borrar los datos de asistencia');
     }
-
-
-
   }
+
 }
