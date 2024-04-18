@@ -17,30 +17,30 @@ export class AsistenciaController {
 
     @Get('/all')
     async getAllAttendances(): Promise<any> {
-        this.logger.log('Fetching all attendance records...');
+        this.logger.log('Obteniendo todos los registros de asistencia...');
         try {
             const attendances = await this.asistenciaService.getAllAsistencias();
             return attendances;
         } catch (error) {
-            this.logger.error('Failed to fetch attendance records', error.stack);
-            throw new HttpException('Failed to fetch attendance records', HttpStatus.INTERNAL_SERVER_ERROR);
+            this.logger.error('No se pudieron obtener los registros de asistencia', error.stack);
+            throw new HttpException('Hubo un error al obtener los registros de asistencia', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Post('/guardar')
     async fetchAndStoreAttendances(): Promise<any> {
-        this.logger.log('Fetching attendance records from ZKTeco device...');
+        this.logger.log('Obteniendo los registros de asistencia desde el dispositivo...');
         try {
             const response = await this.biometricoService.getZKTecoAttendances();
             if (!response || !response.data) {
-                this.logger.error('Invalid attendance data format or no data returned');
-                throw new HttpException('Invalid attendance data format', HttpStatus.BAD_REQUEST);
+                this.logger.error('Datos inválidos de asistencia');
+                throw new HttpException('Formato inválido de datos de asistencia', HttpStatus.BAD_REQUEST);
             }
 
             const attendances = response.data;
             const results = [];
             for (const attendance of attendances) {
-                this.logger.log(`Processing attendance for user ID: ${attendance.userSn}`);
+                this.logger.log(`Procesando asistencia para usuario ID: ${attendance.userSn}`);
                 const result = await this.asistenciaService.addOrUpdateAsistencia({
                     userSn: attendance.userSn,
                     recordTime: attendance.recordTime
@@ -49,8 +49,8 @@ export class AsistenciaController {
             }
             return results;
         } catch (error) {
-            this.logger.error('Failed to fetch and store attendance data', error.stack);
-            throw new HttpException('Failed to fetch and store attendance data', HttpStatus.INTERNAL_SERVER_ERROR);
+            this.logger.error('Fallo al obtener y guardar datos de asistencia', error.stack);
+            throw new HttpException('Fallo al obtener y guardar los datos de asistencia', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

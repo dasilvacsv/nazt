@@ -5,7 +5,6 @@ import { EmpleadoService } from '../empleado/empleado.service';
 import { Biometrico } from './entitites/biometrico.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AsistenciaService } from 'src/asistencia/asistencia.service';
 
 @Injectable()
 export class BiometricoService {
@@ -16,7 +15,6 @@ export class BiometricoService {
     private empleadoService: EmpleadoService,
     @InjectRepository(Biometrico)
     private biometricoRepository: Repository<Biometrico>,
-    private asistenciaService: AsistenciaService,
   ) {}
 
   private async withTimeout(promise: Promise<any>, ms: number): Promise<any> {
@@ -53,7 +51,6 @@ export class BiometricoService {
   async getZKTecoAttendances(): Promise<any> {
     return this.executeOperation(async zk => {
         const attendances = await zk.getAttendances();
-        this.logger.debug(`Received attendances: ${JSON.stringify(attendances)}`);
         return attendances;
     }).catch(error => {
         this.logger.error('Error fetching attendances:', error);
